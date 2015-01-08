@@ -1,0 +1,13 @@
+import(methods)
+
+importFrom(utils, download.file, installed.packages, read.table)
+
+
+importMethodsFrom(GenomicRanges)
+
+import(IRanges)
+
+export(EnhancedTxDb,
+       createTxDbFromEnsembl,
+       loadEnhancedTxDb,
+       saveEnhancedTxDb)

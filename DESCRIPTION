@@ -1,0 +1,15 @@
+Package: EnhancedTxDbs
+Title: Storing annotation in TranscriptDb objects
+Version: 0.0.1
+Author: D. Bindreither
+License: Artistic-2.0
+Description: Provides functions for creating TranscriptDb objects from Ensembl.
+Maintainer: Daniel Bindreither <daniel.bindreither@gmail.com>
+Depends: GenomicFeatures(>= 1.8.1), GenomicRanges (>= 1.8.1), IRanges
+Imports: methods
+Suggests: rtracklayer
+Collate: AllGenerics.R
+         makeTxDbFromExons.R
+         EnhancedTxDb-class.R
+         serializeEnhancedTxDb.R
+biocViews: Genetics

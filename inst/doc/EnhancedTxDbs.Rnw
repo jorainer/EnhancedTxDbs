@@ -1,0 +1,134 @@
+%\VignetteIndexEntry{Splice graph analysis of RNA-Seq data}
+%\VignetteKeywords{Annotation}
+%\VignettePackage{SpliceGraph}
+\documentclass[11pt]{article}
+
+\usepackage{url}
+\usepackage{float}
+\usepackage{xcolor}
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\Rmethod}[1]{{\texttt{#1}}}
+\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+\newcommand{\Rcode}[1]{{\texttt{#1}}}
+\newcommand{\software}[1]{\textsf{#1}}
+\newcommand{\R}{\software{R}}
+
+
+\title{Enhanced \Rpackage{TranscriptDb} objects for capturing
+  annotation information together with genomic coordinates}
+\author{Daniel Bindreither}
+
+\SweaveOpts{keep.source=TRUE}
+
+\definecolor{c1}{HTML}{008C73}
+\definecolor{c2}{HTML}{BFFF00}
+
+\begin{document}
+
+\maketitle
+
+<<results=hide, echo=FALSE>>=
+reCnt <- TRUE
+nr.cpu <- 3
+@ 
+
+
+\section{Introduction}
+
+The \Rpackage{EnhancedTxDbs} is designed to keep a collection of
+genomic coordinates and the associated gene, transcript and exon
+annotation information together in one object called \Rclass{EnhancedTxDb}. 
+Additionally functionalities for creating \Rclass{EnhancedTxDb}
+objects by utilizing the \textit{ENSEMBL Perl API} \cite{Flicek01012012}  
+are provided. This vignette
+describes how to access the \textit{ENSEMBL}
+data base and how to use the
+resulting \Rclass{EnhancedTxDb} object. The advantage of keeping
+annotation information together with the genomic coordinates arises if
+somebody is interested in different types of transcripts, genes or
+exons. Since the gene and transcript biotypes are provided it should
+be an easy task to subset to the individual biotypes.
+
+\section{Creating a \Rclass{EnhancedTxDb} object}
+
+As already mentioned in the introduction \Rclass{EnhancedTxDb} objects
+can be either created directly from the \textit{ENSEMBL} data base via the \textit{Perl
+API} or by providing external annotation information. In here both
+approaches are described.
+
+Loading the \Rpackage{EnhancedTxDbs} package for creating a
+\Rclass{EnhancedTxDb} object from \textit{ENSEMBL}. For time reasons build such
+an object only for the human chromosome 19. We have to provide the
+path to the installation location of the \textit{ENSEMBL Perl API}, the
+version of \textit{ENSEMBL}, the species from wich we would like to create 
+the object, and the username respectively password.
+
+<<results=hide>>=
+library("EnhancedTxDbs")
+if(interactive()) {
+  eAPI <- "/home500/ensembl/API/current_API/ensembl/ensembl/modules"
+  EnhancedTxDb <- 
+    createTxDbFromEnsembl(67, annotInfo=TRUE,
+                          ensemblApi=eAPI, 
+                          species="human", user="anonuser", 
+                          host="madb.i-med.ac.at", 
+                          pass="", chr="19")
+} else {
+  path <- system.file("extdata", package="EnhancedTxDbs")
+  fn <- paste(path, "ens67chr19", sep="/")
+  EnhancedTxDb <- loadEnhancedTxDb(fn)
+}
+@ 
+
+Now we have a look at the resulting object and its features.
+The \Rclass{EnhancedTxDb} object has the same features as the classic
+\Rclass{TranscriptDb} object. Information about how many transcripts,
+genes, cds and exons are captured are provided. Additionally the
+creation data and the respective package version are given.
+
+<<>>=
+EnhancedTxDb
+@ 
+
+One use case would be an RNA-Seq experiment where the interest lies on
+the differential expression of all known lincRNAs of \textit{ENSEMBL}
+version 67. We can easily subset the transcripts to those biotypes
+with the following code. First all transcripts get retrieved from the 
+\Rclass{EnhancedTxDb} object. Then we subset only to the lincRNA genes
+respectively transcripts.
+
+<<>>=
+txs <- transcripts(EnhancedTxDb)
+bidx <- values(txs)[["transcript_biotype"]] == "lincRNA"
+txs.lincRNAs <- txs[bidx]
+@ 
+
+Now we have only the lincRNA transcripts.
+
+\begin{small}
+<<>>=
+txs.lincRNAs
+@ 
+\end{small}
+  
+This is just one basic example use case for \Rclass{EnhancedTxDb} objects.
+
+
+
+\bibliography{EnhancedTxDbs}
+\bibliographystyle{plain}
+
+
+\section{Session Information}
+
+\begin{scriptsize}
+<<SessionInfo, echo=FALSE>>=
+sessionInfo()
+@
+\end{scriptsize}
+
+\end{document}
