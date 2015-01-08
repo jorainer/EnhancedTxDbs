@@ -1,0 +1,5 @@
+2015-01-08:
+- Checking that provided Ensembl version fits the version of the Ensembl perl API.
+- Added a help for get-tables-required-for-TxDb.pl.
+- Extending TxDb and not TranscriptDb (new GenomicFeatures version).
+- Replaced the Ensembl 67 example data with Ensembl 75 data.

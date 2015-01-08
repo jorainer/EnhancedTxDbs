@@ -2,9 +2,10 @@ import(methods)
 
 importFrom(utils, download.file, installed.packages, read.table)
 
-
+import(AnnotationDbi)
+import(GenomicFeatures)
 importMethodsFrom(GenomicRanges)
-
+import(S4Vectors)
 import(IRanges)
 
 export(EnhancedTxDb,

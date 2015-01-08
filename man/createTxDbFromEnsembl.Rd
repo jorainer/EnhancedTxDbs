@@ -8,26 +8,26 @@
 
 \description{
   Takes a data base connection to create a EnhancedTxDb based on
-  ENSEMBL. In contrast to the normal \code{\linkS4class{TranscriptDb}}
+  ENSEMBL. In contrast to the normal \code{\linkS4class{TxDb}}
   objects EnhancedTxDb objects allow to store also annotation information.
   At the moment the only used annotation information is the ENSEMBL biotype.
 }
 
 \usage{
 createTxDbFromEnsembl(version, annotInfo=TRUE,
-ensemblApi="/home/bioinfo/ensembl/73/",
+ensemblApi="/home/bioinfo/ensembl/75/",
 bioperl="~/ENSEMBL/bioperl-1.2.3",
-species="human", user="anonuser", host="madb.i-med.ac.at", 
+species="human", user="anonymous", host="ensembldb.ensembl.org",
 pass="", chr=character(), ...)
 }
 
-\arguments{  
+\arguments{
   \item{version}{
     Ensembl version from which the object should be created. E.g.: 67
   }
   \item{annotInfo}{
     Logical. If \code{TRUE} an EnhancedTxDb object is
-    returned. Otherwise a \code{\linkS4class{TranscriptDb}} object is
+    returned. Otherwise a \code{\linkS4class{TxDb}} object is
     created.
   }
   \item{ensemblApi}{
@@ -37,7 +37,7 @@ pass="", chr=character(), ...)
   \item{bioperl}{
     Location of the BioPerl library.
   }
-  
+
   \item{species}{
     Species for which the \code{\linkS4class{TranscriptDb}} or
     EnhancedTxDb object should be created. Default is \code{human}.
@@ -60,7 +60,7 @@ pass="", chr=character(), ...)
 }
 
 \details{
-  Making a \code{\linkS4class{TranscriptDb}} or a EnhancedTxDb object
+  Making a \code{\linkS4class{TxDb}} or a EnhancedTxDb object
   from ENSEMBL containing annotation information from ENSEMBL.
   The function utilizes a perl script to retrieve the required
   information from ENSEMBL. To make the function work it is essential to
@@ -68,10 +68,10 @@ pass="", chr=character(), ...)
   provided data base connection is correct.
 }
 
-\value{ 
+\value{
   Returns either a \code{\linkS4class{EnhancedTxDb}} object containing
   the coordinates and annotation of the provided ENSEMBL version or a
-  \code{\linkS4class{TranscriptDb}} providing only the genomic
+  \code{\linkS4class{TxDb}} providing only the genomic
   coordinates of the transcripts, exons, cds and genes.
 }
 
@@ -80,17 +80,17 @@ pass="", chr=character(), ...)
 }
 
 \seealso{
-  \link{TranscriptDb}, \link{GRangesList}
+  \link{TxDb}, \link{GRangesList}
 }
 
 \examples{
 \dontrun{
   ## TranscriptDb-object
-  txdb <- createTxDbFromEnsembl(67, annotInfo=FALSE, chr=19)
+  txdb <- createTxDbFromEnsembl(75, annotInfo=FALSE, chr=19)
   txdb
 
   ## EnhancedTxDb-object
-  etxdb <- createTxDbFromEnsembl(67, chr=19)
+  etxdb <- createTxDbFromEnsembl(75, chr=19)
   etxdb
 }
 }

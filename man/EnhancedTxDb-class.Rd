@@ -8,6 +8,7 @@
 % Constructors:
 \alias{EnhancedTxDb}
 \alias{EnhancedTxDb,TranscriptDb-method}
+\alias{EnhancedTxDb,TxDb-method}
 
 % Accessors:
 \alias{transcriptsBy}
@@ -30,13 +31,13 @@
 
 \description{
   The EnhancedTxDb class is a container for a
-  \code{\linkS4class{TranscriptDb}} object and the associated annotation
+  \code{\linkS4class{TxDb}} object and the associated annotation
   information.
 }
 
 \details{
   A EnhancedTxDb object i
-  
+
 }
 
 \section{Constructors}{
@@ -46,10 +47,10 @@
       Constructor to create a EnhancedTxDb object based on splice
       graph edge counts, the associated splice graph structure and the
       \describe{
-        \item{\code{txdb}}{\code{\linkS4class{TranscriptDb}}}
+        \item{\code{txdb}}{\code{\linkS4class{TxDb}}}
         \item{\code{gnAnnot}}{\code{data.frame}}
         \item{\code{txAnnont}}{\code{data.frame}}
-	\item{\code{exAnnont}}{\code{data.frame}}	
+	\item{\code{exAnnont}}{\code{data.frame}}
       }
     }
   }
@@ -83,7 +84,7 @@
 
 \seealso{
   \itemize{
-    \item \link{TranscriptDb-class}
+    \item \link{TxDb-class}
   }
 }
 

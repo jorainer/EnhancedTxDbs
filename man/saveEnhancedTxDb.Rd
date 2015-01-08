@@ -17,7 +17,7 @@ saveEnhancedTxDb(eTxDb, fn, ...)
 \S4method{saveEnhancedTxDb}{EnhancedTxDb,character}(eTxDb, fn, ...)
 }
 
-\arguments{  
+\arguments{
   \item{eTxDb}{
     \code{\linkS4class{EnhancedTxDb}} object which should be serialized
   }
@@ -47,7 +47,7 @@ saveEnhancedTxDb(eTxDb, fn, ...)
 \dontrun{
   ## TranscriptDb-object
   path <- system.file("extdata", package="EnhancedTxDbs")
-  fn <- paste(path, "ens67chr19", sep="/")
+  fn <- paste(path, "ens75chr19", sep="/")
   EnhancedTxDb <- loadEnhancedTxDb(fn)
   saveEnhancedTxDb(EnhancedTxDb, "myEnhancedTxDb")
 }

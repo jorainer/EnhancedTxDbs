@@ -41,7 +41,7 @@ loadEnhancedTxDb(fn, ...)
 \examples{
 \dontrun{
   path <- system.file("extdata", package="EnhancedTxDbs")
-  fn <- paste(path, "ens67chr19", sep="/")
+  fn <- paste(path, "ens75chr19", sep="/")
   EnhancedTxDb <- loadEnhancedTxDb(fn)
 }
 }

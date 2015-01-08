@@ -4,7 +4,7 @@
 ### Stores TranscriptDb objects together with annotation information from ENSEMBL
 
 setClass("EnhancedTxDb",
-         representation(txdb="TranscriptDb",
+         representation(txdb="TxDb",
                         txAnnot="data.frame",
                         gnAnnot="data.frame",
                         exAnnot="data.frame"),
@@ -14,7 +14,7 @@ setClass("EnhancedTxDb",
                    exAnnot=NULL)
          )
 
-## Validity method 
+## Validity method
 .valid.EnhancedTxDb <- function(x)
 {
      if(! all(names(exonsBy(x@txdb, "tx")) %in% rownames(x@txAnnot))){
@@ -45,13 +45,19 @@ setMethod(EnhancedTxDb, "TranscriptDb",
     new("EnhancedTxDb", txdb=txdb, txAnnot=txAnnot, gnAnnot=gnAnnot, exAnnot=exAnnot, ...)
 })
 
+setMethod(EnhancedTxDb, "TxDb",
+    function(txdb, txAnnot, gnAnnot, exAnnot, ..., verbose=FALSE)
+{
+    new("EnhancedTxDb", txdb=txdb, txAnnot=txAnnot, gnAnnot=gnAnnot, exAnnot=exAnnot, ...)
+})
+
 ## Accessor for transcripts
 setMethod("transcriptsBy", "EnhancedTxDb",
 function(x, ...)
 {
   by <- match.arg(by)
   txs <- transcriptsBy(x@txdb, ...)
-  
+
   gn <- rep(names(txs), elementLengths(txs))
   txs <- unlist(txs, use.names=FALSE)
     df <- DataFrame(values(txs), x@txAnnot[values(txs)[["tx_id"]], ])
@@ -101,7 +107,7 @@ function(x, ...)
 
 setReplaceMethod("isActiveSeq","EnhancedTxDb",
 function(x, value){
-  GenomicFeatures:::isActiveSeq(x@txdb) <- value
+  GenomicFeatures::isActiveSeq(x@txdb) <- value
   x
 })
 

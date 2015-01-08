@@ -1,9 +1,9 @@
-## This script retrives the exon and transcript information required 
+## This script retrives the exon and transcript information required
 ## for creating a TranscriptDb object later in R
 
-my $script_version="0.0.1";
+my $script_version="0.0.2";
 
-## uses environment variable ENS pointing to the 
+## uses environment variable ENS pointing to the
 ## ENSEMBL API on the computer
 use lib $ENV {ENS};
 use strict;
@@ -22,12 +22,31 @@ my $chrPreSel="NA";
 
 ## connecting to the ENSEMBL data base
 use Bio::EnsEMBL::Registry;
-my $user = "anonuser";
-my $host = "madb.i-med.ac.at";
+use Bio::EnsEMBL::ApiVersion;
+#my $user = "anonuser";
+#my $host = "madb.i-med.ac.at";
+my $user = "anonymous";
+my $host = "ensembldb.ensembl.org";
 my $pass = "";
 my $registry = 'Bio::EnsEMBL::Registry';
 
-getopts("e:d:p:h:u:s:w:",\%option);
+getopts("e:d:H:hP:U:s:w:",\%option);
+
+if( defined( $option{ h } ) ){
+  ## print help and exit.
+  print( "\nget-tables-required-for-TxDb version ".$script_version.".\n" );
+  print( "Retrieves gene/transcript/exon annotations from Ensembl and stores it as tabulator delimited text files that can be used to generate a Bioconductor TxDb database.\n\n" );
+  print( "usage: perl get-tables-required-for-TxDb -e:d:P:hH:U:s:w\n" );
+  print( "-e (required): the Ensembl version (e.g. -e 75). The function will internally check if the submitted version matches the Ensembl API version and database queried.\n" );
+  print( "-d (optional): the Ensembl database, defaults to core.\n" );
+  print( "-H (optional): the hostname of the Ensembl database; defaults to ensembldb.ensembl.org.\n" );
+  print( "-h (optional): print this help message.\n" );
+  print( "-P (optional): the password to access the Ensembl database.\n" );
+  print( "-U (optional): the username to access the Ensembl database.\n" );
+  print( "-s (optional): the species; defaults to human.\n" );
+  print( "-w (optional): a list of chromosomes; by default all genes will be fetched.\n" );
+  exit 0;
+}
 
 if( defined($option{ d } ) ){
 	$ensembl_database=$option{ d };
@@ -36,14 +55,14 @@ if( defined($option{ s } ) ){
 	$species=$option{ s };
 }
 
-if( defined( $option{ u } ) ){
-	$user=$option{ u };
+if( defined( $option{ U } ) ){
+	$user=$option{ U };
 }
-if( defined( $option{ h } ) ){
-	$host=$option{ h };
+if( defined( $option{ H } ) ){
+	$host=$option{ H };
 }
-if( defined( $option{ p } ) ){
-	$pass=$option{ p };
+if( defined( $option{ P } ) ){
+	$pass=$option{ P };
 }
 if( defined( $option{ w } ) ){
 	$chrPreSel=$option{ w };
@@ -52,11 +71,16 @@ if( defined( $option{ e } ) ){
 	$ensembl_version=$option{ e };
 }
 else{
-	die("the ensembl version has to be specified with the -e parameter (e.g. -e 50_36l)");
+	die("the ensembl version has to be specified with the -e parameter (e.g. -e 75)");
+}
+
+my $api_version="".software_version()."";
+if( $ensembl_version ne $api_version ){
+    die "The submitted Ensembl version (".$ensembl_version.") does not match the version of the Ensembl API (".$api_version."). Please configure the environment variable ENS to point to the correct API.";
 }
 
 
-$registry->load_registry_from_db(-host => $host, -user => $user, 
+$registry->load_registry_from_db(-host => $host, -user => $user,
 				 -pass => $pass, -verbose => "1" );
 
 my $gene_adaptor = $registry->get_adaptor( $species, $ensembl_database, "gene" );
@@ -129,7 +153,7 @@ foreach my $gene_id ( @gene_ids ){
 	  my $chrom = $gene->slice->seq_region_name;
 
 	  ## store chromosomes per genes
-	 
+
 	  push(@chr_ids, $chrom);
 	  my $gene_external_name= $gene->external_name;
 	  my $gene_biotype = $gene->biotype;
@@ -138,14 +162,14 @@ foreach my $gene_id ( @gene_ids ){
 	  foreach my $transcript ( @transcripts ){
 	    if( $do_transform==1 ){
 	      ## just to be shure that we have the transcript in chromosomal coordinations.
-	      $transcript = $transcript->transform("chromosome");	
+	      $transcript = $transcript->transform("chromosome");
 	    }
 	    my $tx_start = $transcript->start;
 	    my $tx_end = $transcript->end;
 	    my $strand = $transcript->strand;
-	   
+
 	    ## caution!!! will get undef if transcript is non-coding!
-	    my $transcript_cds_start = $transcript->coding_region_start;	
+	    my $transcript_cds_start = $transcript->coding_region_start;
 	    if( !defined( $transcript_cds_start ) ){
 	      $transcript_cds_start = "NULL";
 	    }

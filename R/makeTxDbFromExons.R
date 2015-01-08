@@ -77,8 +77,8 @@ computeExonCds <- function(exTab){
 
   cmd <- paste("perl ", fn, " -s ",
                species," -e ", version, " -w ", chr,
-               " -d core -u ", user, " -h ",
-               host, " -p ", pass, sep="")
+               " -d core -U ", user, " -H ",
+               host, " -P ", pass, sep="")
   system(cmd)
 
   Sys.unsetenv("ENS")
@@ -208,8 +208,8 @@ computeExonCds <- function(exTab){
 
 createTxDbFromEnsembl <-
   function(version, annotInfo=TRUE,
-           ensemblApi="/home/bioinfo/ensembl/73/", bioperl="~/ENSEMBL/bioperl-1.2.3",
-           species = "human", user = "anonuser", host = "madb.i-med.ac.at", pass = "", chr=character(), ...)
+           ensemblApi="/home/bioinfo/ensembl/75/", bioperl="~/ENSEMBL/bioperl-1.2.3",
+           species = "human", user = "anonymous", host = "ensembldb.ensembl.org", pass = "", chr=character(), ...)
 {
   chr <- ifelse(length(chr) == 0, "NA", paste("'", paste(chr, collapse = " "), "'", sep=""))
   .createTxDbFromEnsembl(version=version, annotInfo=annotInfo, ensemblApi=ensemblApi, bioperl=bioperl,
