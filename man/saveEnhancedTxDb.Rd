@@ -40,7 +40,7 @@ saveEnhancedTxDb(eTxDb, fn, ...)
 }
 
 \seealso{
-  \link{TranscriptDb}
+  \link{TxDb}
 }
 
 \examples{

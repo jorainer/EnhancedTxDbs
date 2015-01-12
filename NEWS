@@ -1,5 +1,10 @@
-2015-01-08:
-- Checking that provided Ensembl version fits the version of the Ensembl perl API.
-- Added a help for get-tables-required-for-TxDb.pl.
-- Extending TxDb and not TranscriptDb (new GenomicFeatures version).
-- Replaced the Ensembl 67 example data with Ensembl 75 data.
+* 2015-01-09:
+  - Added a perl script get-chrominfo.pl that fetches the sequence lengths from Ensembl.
+    These can be used as "seqinfo" to create a TxDb database from a Ensembl GTF file of all genes.
+  - Added the R-function getChrominfo to call the above perl script from within R.
+
+* 2015-01-08:
+  - Checking that provided Ensembl version fits the version of the Ensembl perl API.
+  - Added a help for get-tables-required-for-TxDb.pl.
+  - Extending TxDb and not TranscriptDb (new GenomicFeatures version).
+  - Replaced the Ensembl 67 example data with Ensembl 75 data.

@@ -11,4 +11,6 @@ import(IRanges)
 export(EnhancedTxDb,
        createTxDbFromEnsembl,
        loadEnhancedTxDb,
-       saveEnhancedTxDb)
+       saveEnhancedTxDb,
+       getChrominfo
+       )
